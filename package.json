@@ -1,0 +1,20 @@
+{
+  "name": "redmine-timetable-cli",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Global redmine command wrapper for the redmine-timetable TUI",
+  "bin": {
+    "redmine": "bin/redmine.js"
+  },
+  "scripts": {
+    "redmine": "node bin/redmine.js",
+    "redmine:help": "node bin/redmine.js help"
+  },
+  "files": [
+    "bin",
+    "cli",
+    "cli/ascii.txt",
+    ".env.example",
+    "unfilled.xlsx"
+  ]
+}

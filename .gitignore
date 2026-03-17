@@ -1,0 +1,39 @@
+# Local secrets
+.env
+
+# Python environments
+.venv/
+venv/
+env/
+.runtime/
+
+# Python cache / tooling
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Build / generated output
+build/
+dist/
+filled.xlsx
+filled.pdf
+filled-*.xlsx
+filled-*.pdf
+*.bak
+
+# Office temp files
+~$*.xlsx
+
+# Local temp folders
+.tmp/
+tmp/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
