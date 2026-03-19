@@ -2,11 +2,127 @@
 
 `redmine-cli` is a Windows-first Redmine utility that combines a keyboard-driven CLI/TUI with the original Excel-based GUI exporter.
 
+![redmine-cli TUI](img/redmine-cli.jpg)
+
 The project covers three main workflows:
 
 - inspect your Redmine hours and monthly work totals
 - generate monthly timetable Excel and PDF files
 - create Redmine issues and time entries manually or from Notion tasks
+
+## Main Menu
+
+When you launch `redmine`, the TUI command hub exposes these actions:
+
+- `Get monthly working hours`
+- `Log time manually`
+- `Create new issue`
+- `Statistics`
+- `Timetable export`
+- `Upload Notion Done tasks`
+- `Settings`
+- `Exit`
+
+### Menu Items With Examples
+
+#### Get monthly working hours
+
+Use this when you want a quick monthly summary from Redmine.
+
+Example:
+
+```powershell
+redmine hours
+```
+
+This shows daily totals for the selected month and can also display estimated earnings if `SALARY_PER_HOUR` is configured.
+
+#### Log time manually
+
+Use this when the Redmine issue already exists and you just want to add a new time entry.
+
+Example:
+
+```powershell
+redmine log
+```
+
+Typical inputs:
+
+- select project
+- select issue
+- enter hours and minutes
+- choose activity
+- add comment
+- set spent date
+
+#### Create new issue
+
+Use this when the task is not yet in Redmine and you want to create it first.
+
+Example:
+
+```powershell
+redmine issue new
+```
+
+You can create the issue directly under a project or descend through an issue tree and create it as a subtask. After creation, the app can immediately log time to it.
+
+#### Statistics
+
+Use this for overview and trend analysis.
+
+Example:
+
+```powershell
+redmine stats
+```
+
+Available statistics include:
+
+- monthly project distribution
+- historical hours trend
+- historical earnings trend
+
+#### Timetable export
+
+Use this to generate the monthly Excel and PDF timetable files.
+
+Example:
+
+```powershell
+redmine timetable
+```
+
+This fetches the month's time entries, fills the template workbook, and exports the result to PDF.
+
+#### Upload Notion Done tasks
+
+Use this when completed tasks live in Notion and you want to turn them into Redmine issues and time entries.
+
+Example:
+
+```powershell
+redmine upload
+```
+
+This flow can filter by project and `Work / Private`, then create Redmine issues, log time, and archive the processed Notion tasks.
+
+#### Settings
+
+Use this to edit the local `.env` without leaving the TUI.
+
+Example:
+
+```powershell
+redmine settings
+```
+
+You can update Redmine, Notion, and salary-related settings from the menu.
+
+#### Exit
+
+Closes the TUI command hub.
 
 ## What It Can Do
 
