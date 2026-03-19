@@ -79,6 +79,8 @@ class AppConfig:
     timetable: TimetableConfig
     notion: NotionConfig
     default_redmine_activity_id: int | None
+    salary_per_hour: float | None
+    salary_currency: str
 
 
 def set_env_value(name: str, value: str) -> None:
@@ -112,6 +114,9 @@ def load_config(workspace_root: Path, current_dir: Path) -> AppConfig:
     default_activity = optional_env("DEFAULT_REDMINE_ACTIVITY_ID")
     activity_id = int(default_activity) if default_activity else None
 
+    salary_per_hour_raw = optional_env("SALARY_PER_HOUR")
+    salary_per_hour = float(salary_per_hour_raw) if salary_per_hour_raw else None
+
     return AppConfig(
         workspace_root=workspace_root,
         current_dir=current_dir,
@@ -144,4 +149,6 @@ def load_config(workspace_root: Path, current_dir: Path) -> AppConfig:
             redmine_issue_property=optional_env("NOTION_REDMINE_ISSUE_PROPERTY"),
         ),
         default_redmine_activity_id=activity_id,
+        salary_per_hour=salary_per_hour,
+        salary_currency=os.getenv("SALARY_CURRENCY", "HUF"),
     )

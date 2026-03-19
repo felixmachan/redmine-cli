@@ -4,6 +4,7 @@ from datetime import date
 
 import questionary
 from rich.console import Console
+from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
@@ -36,11 +37,42 @@ def main_menu() -> str:
     return questionary.select(
         "Choose a command",
         choices=[
+            questionary.Choice("Get monthly working hours", "hours"),
             questionary.Choice("Timetable export", "timetable"),
             questionary.Choice("Upload Notion Done tasks", "upload"),
             questionary.Choice("Exit", "exit"),
         ],
     ).ask() or "exit"
+
+
+def show_hours_summary(
+    console: Console,
+    year: int,
+    month: int,
+    days: list[tuple[str, float]],
+    salary_per_hour: float | None = None,
+    currency: str = "HUF",
+) -> None:
+    total_hours = sum(h for _, h in days)
+    
+    table = Table(title=f"Working hours for {year}-{month:02d}", border_style="cyan")
+    table.add_column("Day", style="bold")
+    table.add_column("Hours", justify="right")
+    
+    for day_str, hours in days:
+        table.add_row(day_str, f"{hours:.2f}")
+    
+    table.add_section()
+    table.add_row("[bold]Total[/bold]", f"[bold green]{total_hours:.2f}[/bold green]")
+    
+    console.print(table)
+    
+    summary_text = f"Total worked: [bold green]{total_hours:.2f} hours[/bold green]"
+    if salary_per_hour:
+        total_salary = total_hours * salary_per_hour
+        summary_text += f"\nEstimated salary: [bold yellow]{total_salary:,.0f} {currency}[/bold yellow] ([dim]{salary_per_hour:,.0f} {currency}/h[/dim])"
+    
+    console.print(Panel(summary_text, border_style="green"))
 
 
 def select_month(today: date) -> tuple[int, int]:

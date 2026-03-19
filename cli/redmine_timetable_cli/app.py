@@ -9,7 +9,7 @@ from rich.panel import Panel
 from .config import load_config, persist_env_value
 from .services.notion_api import NotionClient
 from .services.redmine_api import RedmineClient
-from .services.timetable_service import month_to_date_range, run_timetable
+from .services.timetable_service import aggregate_hours_by_day, get_time_entries, month_to_date_range, run_timetable
 from .tui import (
     ask_confirm,
     ask_percent_done,
@@ -31,6 +31,7 @@ from .tui import (
     render_help,
     select_month,
     show_doctor,
+    show_hours_summary,
     show_timetable_result,
     show_upload_summary,
 )
@@ -53,6 +54,8 @@ class CliApp:
                 return self.run_hub()
             if command == "help":
                 return self.run_help()
+            if command == "hours":
+                return self.run_hours_command()
             if command == "timetable":
                 return self.run_timetable_command()
             if command == "upload":
@@ -75,6 +78,9 @@ class CliApp:
             selection = main_menu()
             if selection == "exit":
                 return 0
+            if selection == "hours":
+                self.run_hours_command()
+                continue
             if selection == "timetable":
                 self.run_timetable_command()
                 continue
@@ -86,6 +92,30 @@ class CliApp:
     def run_help(self) -> int:
         self._render_banner_once()
         render_help(self.console)
+        return 0
+
+    def run_hours_command(self) -> int:
+        self._render_banner_once()
+        year, month = select_month(date.today())
+        date_from, date_to = month_to_date_range(year, month)
+        
+        self.console.print(f"[cyan]Fetching hours for {year}-{month:02d}...[/cyan]")
+        entries = get_time_entries(
+            self.config.redmine.base_url or "",
+            self.config.redmine.api_key or "",
+            self.config.redmine.user_id or "me",
+            date_from,
+            date_to,
+        )
+        days = aggregate_hours_by_day(entries)
+        show_hours_summary(
+            self.console,
+            year,
+            month,
+            days,
+            salary_per_hour=self.config.salary_per_hour,
+            currency=self.config.salary_currency,
+        )
         return 0
 
     def run_doctor(self) -> int:
