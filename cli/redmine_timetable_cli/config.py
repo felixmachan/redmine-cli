@@ -81,6 +81,7 @@ class AppConfig:
     default_redmine_activity_id: int | None
     salary_per_hour: float | None
     salary_currency: str
+    notion_enabled: bool
 
 
 def set_env_value(name: str, value: str) -> None:
@@ -124,7 +125,7 @@ def load_config(workspace_root: Path, current_dir: Path) -> AppConfig:
             base_url=optional_env("REDMINE_BASE_URL"),
             api_key=optional_env("REDMINE_API_KEY"),
             user_id=optional_env("REDMINE_USER_ID"),
-            http_user_agent=os.getenv("HTTP_USER_AGENT", "redmine-timetable-cli/2.0"),
+            http_user_agent=os.getenv("HTTP_USER_AGENT", "redmine-cli/2.0"),
             use_curl=bool_env("USE_CURL", True),
         ),
         timetable=TimetableConfig(
@@ -151,4 +152,5 @@ def load_config(workspace_root: Path, current_dir: Path) -> AppConfig:
         default_redmine_activity_id=activity_id,
         salary_per_hour=salary_per_hour,
         salary_currency=os.getenv("SALARY_CURRENCY", "HUF"),
+        notion_enabled=bool_env("NOTION_ENABLED", True),
     )

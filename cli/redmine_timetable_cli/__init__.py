@@ -1,1 +1,1 @@
-"""Second-generation CLI/TUI for redmine-timetable."""
+"""Second-generation CLI/TUI for redmine-cli."""

@@ -1,11 +1,11 @@
-# Redmine Timetable
+# redmine-cli
 
-Redmine Timetable is a Windows-focused Redmine utility project with two modes:
+`redmine-cli` is a Windows-focused Redmine utility with two modes:
 
-- a classic GUI timetable exporter under `gui/`
+- a classic GUI exporter under `gui/`
 - a newer CLI/TUI available globally as `redmine`
 
-The project can:
+It can:
 
 - export monthly Redmine time entries into Excel and PDF
 - guide you through a keyboard-driven TUI workflow
@@ -17,12 +17,12 @@ The project can:
 
 ```text
 .
-├─ bin/                 # global redmine command wrapper
-├─ cli/                 # CLI / TUI implementation
-├─ gui/                 # original GUI implementation
-├─ .env.example         # example local configuration
-├─ package.json         # npm wrapper package
-└─ README.md
+|- bin/                 # global redmine command wrapper
+|- cli/                 # CLI / TUI implementation
+|- gui/                 # original GUI implementation
+|- .env.example         # example local configuration
+|- package.json         # npm wrapper package
+`- README.md
 ```
 
 ## Requirements
@@ -107,7 +107,7 @@ python -m venv gui\venv
 .\gui\build.bat
 ```
 
-The output will be generated under `gui\dist\redmine-timetable`.
+The output will be generated under `gui\dist\redmine-cli`.
 
 ## Features
 

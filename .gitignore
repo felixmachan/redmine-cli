@@ -6,6 +6,7 @@
 venv/
 env/
 .runtime/
+gui/venv/
 
 # Python cache / tooling
 __pycache__/
@@ -15,15 +16,23 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 .mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
 
 # Build / generated output
 build/
 dist/
+gui/build/
+gui/dist/
+*.spec
 filled.xlsx
 filled.pdf
 filled-*.xlsx
 filled-*.pdf
 *.bak
+*.log
 
 # Office temp files
 ~$*.xlsx
@@ -31,9 +40,15 @@ filled-*.pdf
 # Local temp folders
 .tmp/
 tmp/
+temp/
 
 # IDE / OS
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
+
+# agents
+AGENTS.md
+GEMINI.md
+new_functionalities.md

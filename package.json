@@ -1,8 +1,8 @@
 {
-  "name": "redmine-timetable-cli",
+  "name": "redmine-cli",
   "version": "0.1.0",
   "private": true,
-  "description": "Global redmine command wrapper for the redmine-timetable TUI",
+  "description": "Global redmine command wrapper for the redmine-cli TUI",
   "bin": {
     "redmine": "bin/redmine.js"
   },

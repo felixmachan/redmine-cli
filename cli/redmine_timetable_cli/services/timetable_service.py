@@ -139,15 +139,15 @@ def get_time_entries(base_url: str, api_key: str, user_id: str, date_from: str, 
                 break
         return all_entries
 
-    user_filters = []
+    # Try configured user_id first, then "me"
+    filters = []
     if user_id.strip():
-        user_filters.append(user_id.strip())
-    if "me" not in user_filters:
-        user_filters.append("me")
-    user_filters.append(None)
-
-    for user_filter in user_filters:
-        entries = fetch_for_user_filter(user_filter)
+        filters.append(user_id.strip())
+    if "me" not in filters:
+        filters.append("me")
+    
+    for f in filters:
+        entries = fetch_for_user_filter(f)
         if entries:
             return entries
     return []
@@ -161,6 +161,53 @@ def aggregate_hours_by_day(entries):
         if spent_on:
             by_day[spent_on] += hours
     return sorted(by_day.items(), key=lambda item: item[0])
+
+
+def aggregate_hours_by_project(entries):
+    by_project = defaultdict(float)
+    for entry in entries:
+        project = entry.get("project", {})
+        name = project.get("name", "Unknown Project")
+        hours = float(entry.get("hours", 0))
+        by_project[name] += hours
+    return sorted(by_project.items(), key=lambda item: item[1], reverse=True)
+
+
+def get_historical_stats(config: AppConfig, months_back: int):
+    today = date.today()
+    stats = []
+    
+    # Generate list of months
+    current = today.replace(day=1)
+    month_list = []
+    for _ in range(months_back):
+        month_list.append((current.year, current.month))
+        # Move to previous month
+        last_day_prev = current - timedelta(days=1)
+        current = last_day_prev.replace(day=1)
+    
+    # We want them in chronological order
+    month_list.reverse()
+    
+    for year, month in month_list:
+        date_from, date_to = month_to_date_range(year, month)
+        entries = get_time_entries(
+            config.redmine.base_url or "",
+            config.redmine.api_key or "",
+            config.redmine.user_id or "me",
+            date_from,
+            date_to
+        )
+        total_hours = sum(float(e.get("hours", 0)) for e in entries)
+        stats.append({
+            "label": f"{year}-{month:02d}",
+            "year": year,
+            "month": month,
+            "hours": total_hours,
+            "earnings": total_hours * (config.salary_per_hour or 0)
+        })
+        
+    return stats
 
 
 def fill_excel(
